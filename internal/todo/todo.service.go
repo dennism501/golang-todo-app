@@ -44,5 +44,5 @@ func (s *Service) UpdateTodo(ID uint, newTodo Todo) (Todo, error) {
 func (s *Service) GetAllTodos() ([]Todo, error) {
 	var todos []Todo
 
-	return todo, nil
+	return todos, nil
 }

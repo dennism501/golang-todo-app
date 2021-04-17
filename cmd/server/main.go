@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/dennism501/golang-todo-app/internal/database"
+	"github.com/dennism501/golang-todo-app/internal/todo"
 	transportHTTP "github.com/dennism501/golang-todo-app/internal/transport/http"
 )
 
@@ -13,7 +15,13 @@ type App struct {
 func (app *App) Run() error {
 	fmt.Println("Setting up our API")
 
-	handler := transportHTTP.NewHandler()
+	var err error
+	db, err := database.NewDatabase()
+	if err != nil {
+		return err
+	}
+	commentService := todo.NewService(db)
+	handler := transportHTTP.NewHandler(commentService)
 	handler.SetRouter()
 
 	if err := http.ListenAndServe(":5000", handler.Router); err != nil {
